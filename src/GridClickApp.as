@@ -1,14 +1,11 @@
 import GridClick.BoardModel;
 import GridClick.CellButton;
 import GridClick.CellEvent;
-
-import flash.events.MouseEvent;
-import mx.controls.Alert;
+import GridClick.CellState;
 
 import mx.containers.GridItem;
 import mx.containers.GridRow;
 import mx.containers.VBox;
-import mx.controls.Button;
 
 protected var solution_:BoardModel;
 protected var model_:BoardModel;
@@ -64,7 +61,25 @@ protected function createCellItem(x:int, y:int) : GridItem
 
 public function onCellClick(event:CellEvent) : void
 {
-	Alert.show("You have clicked on: " + event.col_index + ":" + event.row_index);
+	var x:int = event.col_index;
+	var y:int = event.row_index
+	var state:int = model_.getCell(x, y);
+	
+	switch(state)
+	{
+	case CellState.LOCKED:
+		// do not modify locked cells
+		break;
+	case CellState.ON:
+		model_.setCell(x, y, CellState.OFF);
+		event.button.State = CellState.OFF;
+		break;
+	default: // EMPTY OR OFF
+		model_.setCell(x, y, CellState.ON);
+		event.button.State = CellState.ON;
+		break;
+	}
+//	Alert.show("You have clicked on: " + event.col_index + ":" + event.row_index);
 }
 
 protected function createGameLayout(size:int) : void
