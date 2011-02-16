@@ -4,11 +4,12 @@
 	<mx:ViewStack id="states_" width="100%" height="100%" x="0" y="0" creationPolicy="all">
 		<mx:Canvas id="menu_state_" width="100%" height="100%">
 			<mx:Button label="HELP" click="onHelpClick();" bottom="10" left="10"/>
-			<mx:Button label="New 5x5" width="201" height="58" click="startNewGame(5);"  right="10" bottom="142"/>
-			<mx:Button label="Continue..." width="201" height="58" click="continueGame();"  enabled="false" visible="true" right="10" bottom="208"/>
-			<mx:Button label="New 10x10" width="201" height="58" right="10" bottom="76"/>
-			<mx:Button label="New 15x15" width="201" height="58" right="10" bottom="10"/>
-			<mx:Image left="10" top="10"/>
+			<mx:Button id="menu_continue_" label="Continue..." width="201" height="58" click="continueGame();" enabled="false" visible="true" right="10" bottom="208"/>
+			<mx:Button label="New 5x5" width="201" height="58" right="10" bottom="142" click="startNewGame(5);"/>
+			<mx:Button label="New 10x10" width="201" height="58" right="10" bottom="76" click="startNewGame(10);"/>
+			<mx:Button label="New 15x15" width="201" height="58" right="10" bottom="10" click="startNewGame(15);"/>
+			<mx:Image id="menu_logo_" left="10" top="10"/>
+			<mx:Label text="Version" width="364" id="status_" left="73" bottom="10"/>
 		</mx:Canvas>
 		<mx:Canvas id="play_state_" width="100%" height="100%">
 			<mx:VBox left="10" top="10" right="10" bottom="10">
@@ -20,7 +21,7 @@
 					</mx:GridRow>
 				</mx:Grid>
 				<mx:HBox width="100%" height="60">
-					<mx:Image />
+					<mx:Image id="play_logo_" width="100" height="59" />
 					<mx:Label id="completed_" text="xxx %&#xd;completed" />
 					<mx:VBox>
 						<mx:Label text="time elapsed:" />
@@ -35,7 +36,7 @@
 			</mx:VBox>
 		</mx:Canvas>
 		<mx:Canvas id="help_state_" width="100%" height="100%">
-			<mx:Label text="How to play the game..." width="418" height="274" horizontalCenter="-6" top="67"/>
+			<mx:Label id="help_text_" text="How to play the game..." width="418" height="274" horizontalCenter="-6" top="67"/>
 			<mx:Label text="HELP" width="418" height="49" fontSize="32" fontWeight="bold" horizontalCenter="-6" top="10"/>
 			<mx:Button label="OK" width="65" click="onHelpCloseClick();" horizontalCenter="170" top="349"/>
 		</mx:Canvas>

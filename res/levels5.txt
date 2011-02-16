@@ -1,0 +1,19 @@
+title: Schlüssel
+size: 5
+
+..O..
+.O.O.
+..O..
+..O..
+.OOO.
+
+
+title: Herz
+size: 5
+
+.O.O.
+O.O.O
+O...O
+.O.O.
+..O..
+
