@@ -11,9 +11,10 @@ import mx.containers.GridItem;
 import mx.containers.GridRow;
 import mx.containers.VBox;
 import mx.controls.Label;
+import mx.controls.Alert;
 import mx.core.Container;
 
-protected var version_:String = "0.4.4";
+protected var version_:String = "0.4.5";
 protected var solution_:BoardModel;
 protected var model_:BoardModel;
 protected var row_summaries_:Array;
@@ -148,9 +149,21 @@ public function onCellClick(event:CellEvent) : void
 		updateColSummary(x, model_.getColSummary(x));
 		updateRowSummary(y, model_.getRowSummary(y));
 	}
+	else
+	{
+		checkGameComplete();
+	}
 
 //	Alert.show("Test: " + model_.getRowSummary(y).join(","));
 //	Alert.show("You have clicked on: " + event.col_index + ":" + event.row_index);
+}
+
+protected function checkGameComplete() : void
+{
+	if (model_.equals(solution_))
+	{
+		Alert.show("GESCHAFFT!", "GEWONNEN");
+	}
 }
 
 protected function updateGameViewSummaries(model:BoardModel) : void
@@ -182,7 +195,6 @@ protected function updateGameView(model:BoardModel) : void
 			CellButton(Container(cells_[y*model.width + x]).getChildAt(0)).State = state;
 		}
 	}
-	updateGameViewSummaries(model);
 }
 
 protected function createGameLayout(size:int) : void
@@ -302,6 +314,10 @@ public function onClearClick() : void
 	// clear the current board model and update view
 	model_.clear();
 	updateGameView(model_);
+	if (edit_mode_)
+	{
+		updateGameViewSummaries(model_);
+	}
 }
 
 /*

@@ -64,6 +64,27 @@ package GridClick
 			return data_[getIndex(x,y)];
 		}
 		
+		public function equals(model:BoardModel) : Boolean
+		{
+			var x:int;
+			var y:int;
+			if (width_ == model.width && height_ == model.height)
+			{
+				for (y=0; y<height_; y++)
+				{
+					for (x=0; x<width_; x++)
+					{
+						if (getCell(x,y) != model.getCell(x,y))
+						{
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+		
 		public function getRowSummary(y:int) : Array
 		{
 			var temp:String = "";
