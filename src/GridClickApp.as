@@ -1,4 +1,5 @@
 import GridClick.BoardModel;
+import GridClick.BoardSummary;
 import GridClick.CellButton;
 import GridClick.CellEvent;
 import GridClick.CellState;
@@ -10,11 +11,11 @@ import Resources.TxtLevels5;
 import mx.containers.GridItem;
 import mx.containers.GridRow;
 import mx.containers.VBox;
-import mx.controls.Label;
 import mx.controls.Alert;
+import mx.controls.Label;
 import mx.core.Container;
 
-protected var version_:String = "0.4.5";
+protected var version_:String = "0.4.9";
 protected var solution_:BoardModel;
 protected var model_:BoardModel;
 protected var row_summaries_:Array;
@@ -80,14 +81,44 @@ protected function createCellItem(x:int, y:int) : GridItem
 	return item;
 }
 
-protected function createSummaryLabel(chunk:String) : Label
+protected function createSummaryLabel(chunk:String, label_state:int = 0) : Label
 {
 	var label:Label = new Label();
 	label.text = chunk.length.toString();
+	label.setStyle("fontWeight", "bold");
+	switch(label_state)
+	{
+	case 1: // ok
+		label.enabled = false;
+		break;
+	case 2: // complete
+		label.setStyle("color", "#00FF00");
+		label.enabled = true;
+	default: // fail
+		label.enabled = true;
+		break;
+	}
 	return label;
 }
 
-protected function updateColSummary(x:int, info:Array) : void
+protected function getLabelState(marker:Array, index:int, complete:Boolean) : int
+{
+	if (complete)
+	{
+		return 2; // complete
+	}
+	else
+	{
+		if (marker && marker[index])
+		{
+			return 1; // ok
+		}
+	}
+	return 0; // fail
+	
+}
+
+protected function updateColSummary(x:int, info:Array, marker:Array = null, complete:Boolean = false) : void
 {
 	var container:GridItem = col_summaries_[x];
 	var box:Container = Container(container.getChildAt(0));
@@ -96,7 +127,7 @@ protected function updateColSummary(x:int, info:Array) : void
 	{
 		for (var index:int = 0 ; index<info.length; index++)
 		{
-			box.addChild(createSummaryLabel(info[index]));
+			box.addChild(createSummaryLabel(info[index], getLabelState(marker, index, complete)));
 		}
 	}
 	else
@@ -105,7 +136,7 @@ protected function updateColSummary(x:int, info:Array) : void
 	}
 }
 
-protected function updateRowSummary(y:int, info:Array) : void
+protected function updateRowSummary(y:int, info:Array, marker:Array = null, complete:Boolean = false) : void
 {
 	var container:GridItem = row_summaries_[y];
 	var box:Container = Container(container.getChildAt(0));
@@ -114,7 +145,7 @@ protected function updateRowSummary(y:int, info:Array) : void
 	{
 		for (var index:int = 0 ; index<info.length; index++)
 		{
-			box.addChild(createSummaryLabel(info[index]));
+			box.addChild(createSummaryLabel(info[index], getLabelState(marker, index, complete)));
 		}
 	}
 	else
@@ -151,6 +182,34 @@ public function onCellClick(event:CellEvent) : void
 	}
 	else
 	{
+		var m_sum:Array;
+		var s_sum:Array;
+		var complete:Boolean;
+		var marker:Array;
+		
+		// update col summary
+		s_sum = solution_.getColSummary(x);
+		m_sum = model_.getColSummary(x);
+		complete = BoardSummary.equals(s_sum, m_sum);
+		marker = null;
+		if (!complete && m_sum.length>0)
+		{
+			marker = BoardSummary.getComparison(s_sum, m_sum);
+		}
+		updateColSummary(x, s_sum, marker, complete);
+		
+		// update row summary
+		s_sum = solution_.getRowSummary(y);
+		m_sum = model_.getRowSummary(y);
+		complete = BoardSummary.equals(s_sum, m_sum);
+		marker = null;
+		if (!complete && m_sum.length>0)
+		{
+			marker = BoardSummary.getComparison(s_sum, m_sum);
+		}
+		updateRowSummary(y, s_sum, marker, complete);
+		
+		// check game complete
 		checkGameComplete();
 	}
 

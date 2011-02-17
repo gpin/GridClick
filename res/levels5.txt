@@ -17,3 +17,23 @@ O...O
 .O.O.
 ..O..
 
+
+title: Hund
+size: 5
+
+OOOOO
+O.O.O
+.O.O.
+.O.O.
+..O..
+
+
+title: Sonnenschirm
+size: 5
+
+.OOO.
+O.O.O
+..O..
+..O..
+.OOO.
+

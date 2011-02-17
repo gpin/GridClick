@@ -128,7 +128,7 @@ package GridClick
 			}
 			return chunks;
 		}
-
+		
 		public function exportString() : String
 		{
 			var str:Array = new Array();

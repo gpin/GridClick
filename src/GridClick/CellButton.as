@@ -19,8 +19,8 @@ package GridClick
 			
 			super();
 			
-			this.width = 30;
-			this.height = 30;
+			this.width = 25;
+			this.height = 25;
 
 			this.State = CellState.EMPTY;
 			            
